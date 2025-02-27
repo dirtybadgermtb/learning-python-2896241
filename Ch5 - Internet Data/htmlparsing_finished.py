@@ -6,6 +6,7 @@
 # import the HTMLParser module
 # in Python 3 you need to import from html.parser
 from html.parser import HTMLParser
+import os
 
 paragraphs = 0
 
@@ -44,15 +45,19 @@ class MyHTMLParser(HTMLParser):
 def main():
     # instantiate the parser and feed it some HTML
     parser = MyHTMLParser()
-      
-    # open the sample HTML file and read it
-    f = open("samplehtml.html")
-    if f.mode == "r":
-        contents = f.read() # read the entire file
-        parser.feed(contents)
     
-    print ("Paragraph tags:", paragraphs)
+    # Get the absolute path to the HTML file
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    html_file = os.path.join(current_dir, "samplehtml.html")
+    
+    try:
+        with open(html_file, "r") as f:
+            contents = f.read()
+            parser.feed(contents)
+        
+        print("Paragraph tags:", paragraphs)
+    except FileNotFoundError:
+        print(f"Error: Could not find file at {html_file}")
 
 if __name__ == "__main__":
     main()
-  
